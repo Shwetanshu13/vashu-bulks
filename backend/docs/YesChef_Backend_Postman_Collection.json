@@ -1,0 +1,593 @@
+{
+  "info": {
+    "name": "YesChef Backend API",
+    "description": "Complete API collection for YesChef backend with authentication, meal tracking, nutrition logging, and AI-powered meal analysis",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "yeschef-backend"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "User Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/signup",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "signup"]
+            },
+            "description": "Register a new user account. Email verification will be sent automatically."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('user_email', response.user.email);",
+                  "    pm.collectionVariables.set('user_id', response.user.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{verification_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/verify-email",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "verify-email"]
+            },
+            "description": "Verify user email using the token received via email. Required before login."
+          }
+        },
+        {
+          "name": "Resend Verification Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{user_email}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/resend-verification",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "resend-verification"]
+            },
+            "description": "Resend verification email if the original one expired or was lost."
+          }
+        },
+        {
+          "name": "User Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{user_email}}\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Login with verified email and password. Returns JWT token for authentication."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('auth_token', response.token);",
+                  "    pm.collectionVariables.set('current_user_id', response.user.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Meals",
+      "item": [
+        {
+          "name": "Create Meal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mealName\": \"Chicken Caesar Salad\",\n  \"mealTime\": \"2025-09-21T12:30:00Z\",\n  \"nutritionData\": {\n    \"calories\": 450,\n    \"protein\": 35,\n    \"carbohydrates\": 20,\n    \"fats\": 28\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/meals",
+              "host": ["{{base_url}}"],
+              "path": ["api", "meals"]
+            },
+            "description": "Create a new meal entry with optional nutrition data."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('meal_id', response.meal.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Meals",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/meals?page=1&limit=10&startDate=2025-09-21&endDate=2025-09-21",
+              "host": ["{{base_url}}"],
+              "path": ["api", "meals"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "startDate",
+                  "value": "2025-09-21"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2025-09-21"
+                }
+              ]
+            },
+            "description": "Get paginated list of user's meals with optional date filtering."
+          }
+        },
+        {
+          "name": "Get Meal by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/meals/{{meal_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "meals", "{{meal_id}}"]
+            },
+            "description": "Get detailed information about a specific meal."
+          }
+        },
+        {
+          "name": "Update Meal",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mealName\": \"Updated Chicken Caesar Salad\",\n  \"mealTime\": \"2025-09-21T13:00:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/meals/{{meal_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "meals", "{{meal_id}}"]
+            },
+            "description": "Update meal name and/or time."
+          }
+        },
+        {
+          "name": "Delete Meal",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/meals/{{meal_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "meals", "{{meal_id}}"]
+            },
+            "description": "Delete a meal and its associated nutrition data."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Nutrition",
+      "item": [
+        {
+          "name": "Add Nutrition to Meal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"calories\": 450,\n  \"protein\": 35,\n  \"carbohydrates\": 20,\n  \"fats\": 28\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/nutrition/meals/{{meal_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "nutrition", "meals", "{{meal_id}}"]
+            },
+            "description": "Add or update nutrition data for a specific meal."
+          }
+        },
+        {
+          "name": "Get Meal Nutrition",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nutrition/meals/{{meal_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "nutrition", "meals", "{{meal_id}}"]
+            },
+            "description": "Get nutrition data for a specific meal."
+          }
+        },
+        {
+          "name": "Update Nutrition",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"calories\": 500,\n  \"protein\": 40,\n  \"carbohydrates\": 25,\n  \"fats\": 30\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/nutrition/{{nutrition_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "nutrition", "{{nutrition_id}}"]
+            },
+            "description": "Update specific nutrition record values."
+          }
+        },
+        {
+          "name": "Delete Nutrition",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nutrition/{{nutrition_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "nutrition", "{{nutrition_id}}"]
+            },
+            "description": "Delete a nutrition record."
+          }
+        },
+        {
+          "name": "Get Daily Nutrition Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nutrition/summary?date=2025-09-21",
+              "host": ["{{base_url}}"],
+              "path": ["api", "nutrition", "summary"],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2025-09-21"
+                }
+              ]
+            },
+            "description": "Get aggregated nutrition summary for a specific date."
+          }
+        }
+      ]
+    },
+    {
+      "name": "AI-Powered Features",
+      "item": [
+        {
+          "name": "Create Meal with AI Analysis",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"I had a grilled chicken breast with quinoa, steamed broccoli, and a side salad with olive oil dressing. The chicken was about 6oz, quinoa was 1 cup cooked, and broccoli was 2 cups.\",\n  \"mealTime\": \"2025-09-21T19:00:00Z\",\n  \"mealName\": \"Dinner\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ai/analyze-meal",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ai", "analyze-meal"]
+            },
+            "description": "Create a meal and automatically analyze it with AI to extract nutrition data. Processing happens asynchronously."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('ai_meal_id', response.meal.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get AI Analysis Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ai/meals/{{ai_meal_id}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ai", "meals", "{{ai_meal_id}}", "status"]
+            },
+            "description": "Check the status of AI analysis for a meal (pending/processing/completed/failed)."
+          }
+        },
+        {
+          "name": "Retry AI Analysis",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ai/meals/{{ai_meal_id}}/retry",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ai", "meals", "{{ai_meal_id}}", "retry"]
+            },
+            "description": "Retry AI analysis for a meal that failed or needs reprocessing."
+          }
+        },
+        {
+          "name": "Get AI Meal Suggestions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ai/suggestions?targetCalories=2000&targetProtein=150&targetCarbs=250&targetFats=65&date=2025-09-21",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ai", "suggestions"],
+              "query": [
+                {
+                  "key": "targetCalories",
+                  "value": "2000"
+                },
+                {
+                  "key": "targetProtein",
+                  "value": "150"
+                },
+                {
+                  "key": "targetCarbs",
+                  "value": "250"
+                },
+                {
+                  "key": "targetFats",
+                  "value": "65"
+                },
+                {
+                  "key": "date",
+                  "value": "2025-09-21"
+                }
+              ]
+            },
+            "description": "Get AI-powered meal suggestions based on nutrition goals and current day's intake."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Server Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            },
+            "description": "Check if the server is running and healthy."
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Set default base URL if not set",
+          "if (!pm.environment.get('base_url')) {",
+          "    pm.environment.set('base_url', 'http://localhost:8000');",
+          "}"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_email",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "current_user_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "meal_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "ai_meal_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "nutrition_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "verification_token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
