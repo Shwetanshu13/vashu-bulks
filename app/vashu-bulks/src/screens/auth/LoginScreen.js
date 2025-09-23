@@ -67,7 +67,7 @@ const LoginScreen = ({ navigation }) => {
                 <ScrollView contentContainerStyle={styles.scrollContent}>
                     <View style={styles.header}>
                         <Text style={styles.title}>Welcome Back</Text>
-                        <Text style={styles.subtitle}>Sign in to continue to Yes Chef</Text>
+                        <Text style={styles.subtitle}>Sign in to continue to Vashu Bulks</Text>
                     </View>
 
                     <View style={styles.form}>

@@ -106,7 +106,7 @@ const SignupScreen = ({ navigation }) => {
                 <ScrollView contentContainerStyle={styles.scrollContent}>
                     <View style={styles.header}>
                         <Text style={styles.title}>Create Account</Text>
-                        <Text style={styles.subtitle}>Join Yes Chef and start your culinary journey</Text>
+                        <Text style={styles.subtitle}>Join Vashu Bulks and start your diet journey</Text>
                     </View>
 
                     <View style={styles.form}>
