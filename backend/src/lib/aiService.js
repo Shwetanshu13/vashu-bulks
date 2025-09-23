@@ -6,8 +6,8 @@ const genAI = new GoogleGenerativeAI(conf.geminiApiKey);
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 export const analyzeMealDescription = async (description, mealName = '', mealTime = '') => {
-    try {
-        const prompt = `
+  try {
+    const prompt = `
 You are a nutrition expert AI. Analyze the following meal description and provide detailed nutritional information.
 
 Meal Information:
@@ -45,68 +45,68 @@ Important guidelines:
 Meal Description to analyze: "${description}"
 `;
 
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    const text = response.text();
 
-        // Clean up the response - remove any markdown formatting
-        const cleanedText = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    // Clean up the response - remove any markdown formatting
+    const cleanedText = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
 
-        // Parse the JSON response
-        let analysisResult;
-        try {
-            analysisResult = JSON.parse(cleanedText);
-        } catch (parseError) {
-            console.error('Failed to parse AI response as JSON:', cleanedText);
-            throw new Error('AI returned invalid JSON format');
-        }
-
-        // Validate the response structure
-        if (!analysisResult.nutrition || !analysisResult.analysis) {
-            throw new Error('AI response missing required fields');
-        }
-
-        // Ensure nutrition values are numbers and non-negative
-        const nutrition = analysisResult.nutrition;
-        nutrition.calories = Math.max(0, parseInt(nutrition.calories) || 0);
-        nutrition.protein = Math.max(0, parseInt(nutrition.protein) || 0);
-        nutrition.carbohydrates = Math.max(0, parseInt(nutrition.carbohydrates) || 0);
-        nutrition.fats = Math.max(0, parseInt(nutrition.fats) || 0);
-
-        return {
-            success: true,
-            data: analysisResult
-        };
-
-    } catch (error) {
-        console.error('Gemini AI analysis error:', error);
-
-        // Return a structured error response
-        return {
-            success: false,
-            error: error.message || 'Failed to analyze meal description',
-            data: {
-                analysis: {
-                    detectedMealName: mealName || 'Unknown',
-                    ingredients: [],
-                    estimatedPortionSize: 'Unknown',
-                    confidence: 0
-                },
-                nutrition: {
-                    calories: 0,
-                    protein: 0,
-                    carbohydrates: 0,
-                    fats: 0
-                },
-                notes: `AI analysis failed: ${error.message || 'Unknown error'}`
-            }
-        };
+    // Parse the JSON response
+    let analysisResult;
+    try {
+      analysisResult = JSON.parse(cleanedText);
+    } catch (parseError) {
+      console.error('Failed to parse AI response as JSON:', cleanedText);
+      throw new Error('AI returned invalid JSON format');
     }
+
+    // Validate the response structure
+    if (!analysisResult.nutrition || !analysisResult.analysis) {
+      throw new Error('AI response missing required fields');
+    }
+
+    // Ensure nutrition values are numbers and non-negative
+    const nutrition = analysisResult.nutrition;
+    nutrition.calories = Math.max(0, parseInt(nutrition.calories) || 0);
+    nutrition.protein = Math.max(0, parseInt(nutrition.protein) || 0);
+    nutrition.carbohydrates = Math.max(0, parseInt(nutrition.carbohydrates) || 0);
+    nutrition.fats = Math.max(0, parseInt(nutrition.fats) || 0);
+
+    return {
+      success: true,
+      data: analysisResult
+    };
+
+  } catch (error) {
+    console.error('Gemini AI analysis error:', error);
+
+    // Return a structured error response
+    return {
+      success: false,
+      error: error.message || 'Failed to analyze meal description',
+      data: {
+        analysis: {
+          detectedMealName: mealName || 'Unknown',
+          ingredients: [],
+          estimatedPortionSize: 'Unknown',
+          confidence: 0
+        },
+        nutrition: {
+          calories: 0,
+          protein: 0,
+          carbohydrates: 0,
+          fats: 0
+        },
+        notes: `AI analysis failed: ${error.message || 'Unknown error'}`
+      }
+    };
+  }
 };
 
 export const generateMealSuggestions = async (nutritionGoals, previousMeals = []) => {
-    try {
-        const prompt = `
+  try {
+    const prompt = `
 You are a nutrition expert AI. Based on the provided nutrition goals and previous meals, suggest healthy meal options.
 
 Nutrition Goals:
@@ -143,23 +143,23 @@ Please provide 3-5 meal suggestions that would help achieve the nutrition goals.
 Only return valid JSON, no additional text.
 `;
 
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
 
-        const cleanedText = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-        const suggestions = JSON.parse(cleanedText);
+    const cleanedText = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    const suggestions = JSON.parse(cleanedText);
 
-        return {
-            success: true,
-            data: suggestions
-        };
+    return {
+      success: true,
+      data: suggestions
+    };
 
-    } catch (error) {
-        console.error('Meal suggestions error:', error);
-        return {
-            success: false,
-            error: error.message || 'Failed to generate meal suggestions'
-        };
-    }
+  } catch (error) {
+    console.error('Meal suggestions error:', error);
+    return {
+      success: false,
+      error: error.message || 'Failed to generate meal suggestions'
+    };
+  }
 };

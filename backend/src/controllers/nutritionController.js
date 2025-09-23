@@ -264,12 +264,16 @@ export const getDailyNutritionSummary = async (req, res) => {
                 message: 'Date parameter is required (YYYY-MM-DD format)'
             });
         }
-        const targetDate = new Date(date);
-        const nextDay = new Date(targetDate);
-        nextDay.setDate(nextDay.getDate() + 1);
-        console.log(targetDate, nextDay);
 
-        // Get daily nutrition summary
+        // Parse the date properly and handle timezone issues
+        const targetDate = new Date(date + 'T00:00:00.000Z'); // Force UTC
+        const nextDay = new Date(targetDate);
+        nextDay.setUTCDate(nextDay.getUTCDate() + 1);
+
+        console.log('Target date:', targetDate.toISOString());
+        console.log('Next day:', nextDay.toISOString());
+
+        // Get daily nutrition summary using date strings for better compatibility
         const summary = await db
             .select({
                 totalCalories: sum(nutrients.calories),
@@ -283,21 +287,21 @@ export const getDailyNutritionSummary = async (req, res) => {
             .where(
                 and(
                     eq(meals.userId, userId),
-                    sql`${meals.mealTime} >= ${targetDate}`,
-                    sql`${meals.mealTime} < ${nextDay}`
+                    sql`DATE(${meals.mealTime}) = ${date}`
                 )
             );
-        console.log(summary);
+
+        console.log('Summary result:', summary);
 
         res.json({
             success: true,
             date,
             summary: {
-                totalCalories: summary[0].totalCalories || 0,
-                totalProtein: summary[0].totalProtein || 0,
-                totalCarbohydrates: summary[0].totalCarbohydrates || 0,
-                totalFats: summary[0].totalFats || 0,
-                mealCount: summary[0].mealCount || 0
+                totalCalories: parseInt(summary[0].totalCalories) || 0,
+                totalProtein: parseInt(summary[0].totalProtein) || 0,
+                totalCarbohydrates: parseInt(summary[0].totalCarbohydrates) || 0,
+                totalFats: parseInt(summary[0].totalFats) || 0,
+                mealCount: parseInt(summary[0].mealCount) || 0
             }
         });
 
