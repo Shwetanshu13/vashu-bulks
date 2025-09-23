@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import ProtectedRoute from '../../components/ProtectedRoute';
 import Header from '../../components/Header';
@@ -20,11 +20,7 @@ export default function MealsPage() {
         endDate: '',
     });
 
-    useEffect(() => {
-        fetchMeals();
-    }, [pagination.page, filters]);
-
-    const fetchMeals = async () => {
+    const fetchMeals = useCallback(async () => {
         try {
             setLoading(true);
             const params = {
@@ -45,7 +41,11 @@ export default function MealsPage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [pagination.page, pagination.limit, filters.startDate, filters.endDate]);
+
+    useEffect(() => {
+        fetchMeals();
+    }, [fetchMeals]);
 
     const handleDeleteMeal = async (mealId) => {
         try {

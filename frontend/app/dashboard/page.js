@@ -22,7 +22,7 @@ export default function DashboardPage() {
                                 Welcome back, {user?.name}!
                             </h2>
                             <p className="text-gray-600 dark:text-gray-400">
-                                Here's your nutrition tracking overview
+                                Here&apos;s your nutrition tracking overview
                             </p>
                         </div>
 
@@ -172,7 +172,7 @@ export default function DashboardPage() {
                                         1. Log Your First Meal
                                     </h4>
                                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                                        Start by adding a meal you've eaten today. Include the meal name, time, and nutrition information if available.
+                                        Start by adding a meal you&apos;ve eaten today. Include the meal name, time, and nutrition information if available.
                                     </p>
                                     <Link href="/meals/add">
                                         <Button variant="primary" size="sm">

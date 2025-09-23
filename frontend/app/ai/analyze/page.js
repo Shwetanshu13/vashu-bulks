@@ -110,7 +110,7 @@ export default function AnalyzePage() {
                                     </li>
                                     <li className="flex items-start">
                                         <span className="mr-2">•</span>
-                                        <span>Mention portion sizes or quantities when possible (e.g., "1 cup of rice")</span>
+                                        <span>Mention portion sizes or quantities when possible (e.g., &quot;1 cup of rice&quot;)</span>
                                     </li>
                                     <li className="flex items-start">
                                         <span className="mr-2">•</span>

@@ -85,7 +85,7 @@ export default function AddMealPage() {
                                 Tips for adding meals:
                             </h3>
                             <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
-                                <li>• Use descriptive meal names like "Grilled Chicken Salad" or "Morning Oatmeal"</li>
+                                <li>• Use descriptive meal names like &quot;Grilled Chicken Salad&quot; or &quot;Morning Oatmeal&quot;</li>
                                 <li>• Set the meal time to when you actually ate or plan to eat</li>
                                 <li>• Nutrition information is optional but helps track your daily intake</li>
                                 <li>• You can always add or edit nutrition data later from the meal details page</li>

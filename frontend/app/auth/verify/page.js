@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import AuthLayout from '../../../components/auth/AuthLayout';
@@ -8,7 +8,7 @@ import Button from '../../../components/auth/Button';
 import Alert from '../../../components/auth/Alert';
 import { authAPI } from '../../../utils/auth';
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
     const [verificationState, setVerificationState] = useState('verifying'); // 'verifying', 'success', 'error'
     const [alert, setAlert] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -119,7 +119,7 @@ export default function VerifyEmailPage() {
                             Verification Failed
                         </h3>
                         <p className="text-gray-600 dark:text-gray-400">
-                            We couldn't verify your email. The link may have expired or is invalid.
+                            We couldn&apos;t verify your email. The link may have expired or is invalid.
                         </p>
                         <div className="space-y-2">
                             <Button
@@ -173,5 +173,25 @@ export default function VerifyEmailPage() {
                 {renderContent()}
             </div>
         </AuthLayout>
+    );
+}
+
+export default function VerifyEmailPage() {
+    return (
+        <Suspense fallback={
+            <AuthLayout
+                title="Email Verification"
+                subtitle="Confirming your email address"
+            >
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <p className="text-gray-600 dark:text-gray-400">
+                        Loading verification...
+                    </p>
+                </div>
+            </AuthLayout>
+        }>
+            <VerifyEmailContent />
+        </Suspense>
     );
 }

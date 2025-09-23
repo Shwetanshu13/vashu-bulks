@@ -7,7 +7,7 @@ import Header from '@/components/Header';
 import Input from '@/components/auth/Input';
 import Button from '@/components/auth/Button';
 import Alert from '@/components/auth/Alert';
-import { getMealSuggestions } from '@/utils/ai';
+import { aiAPI } from '@/utils/ai';
 
 export default function SuggestionsPage() {
     const [formData, setFormData] = useState({
@@ -44,7 +44,7 @@ export default function SuggestionsPage() {
                 Object.entries(formData).filter(([_, value]) => value.trim() !== '')
             );
 
-            const result = await getMealSuggestions(requestData);
+            const result = await aiAPI.getMealSuggestions(requestData);
             setSuggestions(result.suggestions || []);
             setShowForm(false);
         } catch (error) {

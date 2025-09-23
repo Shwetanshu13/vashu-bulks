@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import ProtectedRoute from '../../components/ProtectedRoute';
 import Header from '../../components/Header';
 import Button from '../../components/auth/Button';
@@ -17,11 +17,7 @@ export default function NutritionPage() {
         new Date().toISOString().split('T')[0] // Today's date in YYYY-MM-DD format
     );
 
-    useEffect(() => {
-        fetchDailySummary();
-    }, [selectedDate]);
-
-    const fetchDailySummary = async () => {
+    const fetchDailySummary = useCallback(async () => {
         try {
             setLoading(true);
             const result = await nutritionAPI.getDailyNutritionSummary(selectedDate);
@@ -35,7 +31,11 @@ export default function NutritionPage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [selectedDate]);
+
+    useEffect(() => {
+        fetchDailySummary();
+    }, [fetchDailySummary]);
 
     const handleDateChange = (e) => {
         setSelectedDate(e.target.value);
@@ -201,7 +201,7 @@ export default function NutritionPage() {
                                                 </p>
                                             ) : (
                                                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                                                    You've logged {summary?.mealCount} meal{summary?.mealCount !== 1 ? 's' : ''} today
+                                                    You&apos;ve logged {summary?.mealCount} meal{summary?.mealCount !== 1 ? 's' : ''} today
                                                 </p>
                                             )}
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import ProtectedRoute from '../../../components/ProtectedRoute';
@@ -24,13 +24,7 @@ export default function MealDetailPage() {
     const [showNutritionForm, setShowNutritionForm] = useState(false);
     const [nutritionLoading, setNutritionLoading] = useState(false);
 
-    useEffect(() => {
-        if (mealId) {
-            fetchMeal();
-        }
-    }, [mealId]);
-
-    const fetchMeal = async () => {
+    const fetchMeal = useCallback(async () => {
         try {
             setLoading(true);
             const result = await mealAPI.getMealById(mealId);
@@ -43,7 +37,13 @@ export default function MealDetailPage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [mealId]);
+
+    useEffect(() => {
+        if (mealId) {
+            fetchMeal();
+        }
+    }, [mealId, fetchMeal]);
 
     const handleDeleteMeal = async () => {
         if (window.confirm('Are you sure you want to delete this meal?')) {

@@ -130,7 +130,7 @@ export default function LoginPage() {
             subtitle="Sign in to your YesChef account"
             footer={
                 <p>
-                    Don't have an account?{' '}
+                    Don&apos;t have an account?{' '}
                     <Link href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400">
                         Create one here
                     </Link>

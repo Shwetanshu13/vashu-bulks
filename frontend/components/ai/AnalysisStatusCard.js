@@ -240,7 +240,7 @@ const AnalysisStatusCard = ({
                             AI is analyzing your meal...
                         </h3>
                         <p className="text-gray-600 dark:text-gray-400">
-                            This usually takes 10-30 seconds. We'll automatically update when complete.
+                            This usually takes 10-30 seconds. We&apos;ll automatically update when complete.
                         </p>
                     </div>
                 </div>
@@ -258,7 +258,7 @@ const AnalysisStatusCard = ({
                         Analysis Failed
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400 mb-4">
-                        We couldn't analyze your meal. This might be due to an unclear description or a temporary issue.
+                        We couldn&apos;t analyze your meal. This might be due to an unclear description or a temporary issue.
                     </p>
                     {onRetry && (
                         <Button

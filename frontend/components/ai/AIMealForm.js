@@ -139,7 +139,7 @@ const AIMealForm = ({
                     <li>• Include specific food items and quantities when possible</li>
                     <li>• Mention cooking methods (grilled, fried, steamed, etc.)</li>
                     <li>• Include sauces, dressings, and seasonings</li>
-                    <li>• Specify portion sizes (e.g., "large apple", "1 cup of rice")</li>
+                    <li>• Specify portion sizes (e.g., &quot;large apple&quot;, &quot;1 cup of rice&quot;)</li>
                     <li>• The more detailed your description, the more accurate the analysis</li>
                 </ul>
             </div>
