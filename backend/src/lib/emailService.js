@@ -16,10 +16,10 @@ export const sendVerificationEmail = async (email, verificationToken) => {
     const mailOptions = {
         from: conf.emailFrom,
         to: email,
-        subject: 'Verify Your Email - YesChef',
+        subject: 'Verify Your Email - VashuBulks',
         html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                <h2>Welcome to YesChef!</h2>
+                <h2>Welcome to VashuBulks!</h2>
                 <p>Please verify your email address to complete your registration.</p>
                 <div style="text-align: center; margin: 30px 0;">
                     <a href="${verificationUrl}"

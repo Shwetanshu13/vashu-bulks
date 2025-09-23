@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "YesChef - Meal & Nutrition Tracker",
-  description: "Track your meals, calories, and nutrition with YesChef",
+  title: "VashuBulks - Meal & Nutrition Tracker",
+  description: "Track your meals, calories, and nutrition with VashuBulks",
 };
 
 export default function RootLayout({ children }) {

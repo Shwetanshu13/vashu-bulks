@@ -127,7 +127,7 @@ export default function LoginPage() {
     return (
         <AuthLayout
             title="Welcome back"
-            subtitle="Sign in to your YesChef account"
+            subtitle="Sign in to your VashuBulks account"
             footer={
                 <p>
                     Don&apos;t have an account?{' '}

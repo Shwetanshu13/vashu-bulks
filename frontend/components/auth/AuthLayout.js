@@ -8,7 +8,7 @@ const AuthLayout = ({ children, title, subtitle, footer }) => {
             <div className="max-w-md w-full space-y-8">
                 <div className="text-center">
                     <Link href="/" className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                        YesChef
+                        VashuBulks
                     </Link>
                     <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">
                         {title}

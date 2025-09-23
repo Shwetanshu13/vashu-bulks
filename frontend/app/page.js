@@ -25,7 +25,7 @@ export default function HomePage() {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-            YesChef
+            VashuBulks
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">
             Loading...
