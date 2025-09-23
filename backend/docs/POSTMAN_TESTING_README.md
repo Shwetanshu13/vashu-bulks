@@ -168,10 +168,10 @@ Make sure your `.env` file includes:
 PORT=8000
 DB_URL=postgresql://root:your_password@localhost:5432/yes_chef_db
 JWT_SECRET=your_jwt_secret
-MAILTRAP_HOST=sandbox.smtp.mailtrap.io
-MAILTRAP_PORT=2525
-MAILTRAP_USER=your_mailtrap_user
-MAILTRAP_PASS=your_mailtrap_pass
+MAILERSEND_HOST=sandbox.smtp.mailersend.io
+MAILERSEND_PORT=2525
+MAILERSEND_USER=your_mailersend_user
+MAILERSEND_PASS=your_mailersend_pass
 REDIS_HOST=localhost
 REDIS_PORT=6379
 GEMINI_API_KEY=your_gemini_api_key

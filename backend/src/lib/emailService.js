@@ -2,11 +2,11 @@ import nodemailer from 'nodemailer';
 import conf from '../conf/index.js';
 
 const transporter = nodemailer.createTransport({
-    host: conf.mailtrapHost,
-    port: conf.mailtrapPort,
+    host: conf.mailersendHost,
+    port: conf.mailersendPort,
     auth: {
-        user: conf.mailtrapUser,
-        pass: conf.mailtrapPass
+        user: conf.mailersendUser,
+        pass: conf.mailersendPass
     }
 });
 

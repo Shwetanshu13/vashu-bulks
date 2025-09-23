@@ -7,10 +7,10 @@ export default {
     dbUrl: process.env.DB_URL || 'postgresql://localhost:5432/yeschef',
     saltRounds: 10,
     // Email configuration
-    mailtrapHost: process.env.MAILTRAP_HOST || 'smtp.mailtrap.io',
-    mailtrapPort: process.env.MAILTRAP_PORT || 2525,
-    mailtrapUser: process.env.MAILTRAP_USER,
-    mailtrapPass: process.env.MAILTRAP_PASS,
+    mailersendHost: process.env.MAILERSEND_HOST || 'smtp.mailersend.io',
+    mailersendPort: process.env.MAILERSEND_PORT || 2525,
+    mailersendUser: process.env.MAILERSEND_USER,
+    mailersendPass: process.env.MAILERSEND_PASS,
     emailFrom: process.env.EMAIL_FROM || 'noreply@yeschef.com',
     frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
     // Redis configuration

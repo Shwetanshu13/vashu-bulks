@@ -12,6 +12,7 @@ const connection = new IORedis({
     host: conf.redisHost,
     port: conf.redisPort,
     password: conf.redisPassword,
+    username: 'default',
     maxRetriesPerRequest: null,
 });
 
