@@ -11,8 +11,26 @@ import './lib/queue.js'; // Initialize the queue worker
 const app = express();
 dotenv.config();
 
-app.use(cors());
+// CORS configuration
+const corsOptions = {
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: [
+        'Content-Type',
+        'Authorization',
+        'X-Requested-With',
+        'Accept',
+        'Origin'
+    ],
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
+
+// Handle preflight requests explicitly
+app.options('*', cors(corsOptions));
 
 // Routes
 app.use('/api/auth', authRoutes);
