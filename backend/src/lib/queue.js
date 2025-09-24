@@ -8,11 +8,7 @@ import { eq } from 'drizzle-orm';
 import conf from '../conf/index.js';
 
 // Redis connection
-const connection = new IORedis({
-    host: conf.redisHost,
-    port: conf.redisPort,
-    password: conf.redisPassword,
-    username: 'default',
+const connection = new IORedis(process.env.REDIS_URL, {
     maxRetriesPerRequest: null,
 });
 
