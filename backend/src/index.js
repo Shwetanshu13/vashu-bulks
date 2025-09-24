@@ -15,7 +15,6 @@ dotenv.config();
 const allowedOrigins = [
     'http://localhost:3000',
     'https://vashu-bulks.vercel.app',
-    process.env.FRONTEND_URL
 ];
 
 // Add FRONTEND_URL from environment if it exists
@@ -25,6 +24,7 @@ if (process.env.FRONTEND_URL) {
 
 const corsOptions = {
     origin: function (origin, callback) {
+        console.log('Incoming Origin:', origin);
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
 
